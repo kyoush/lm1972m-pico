@@ -1,21 +1,22 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
+#include "hardware/gpio.h"
+#include "hardware/adc.h"
 
 int main() {
     // To use USB
     stdio_init_all();
 
-    // To use GPIO 25pin
-    gpio_init(25);
-    gpio_set_dir(25, GPIO_OUT);
+    adc_init();
+
+    adc_gpio_init(26);
+    adc_select_input(0);
 
     // Loop
     while (true) {
-        printf("Hello, world!\n");
-
-        gpio_put(25, 1);
-        sleep_ms(250);
-        gpio_put(25, 0);
-        sleep_ms(250);
+        const float conversion_factor = 3.3f / (1 << 12);
+        uint16_t result = adc_read();
+        printf("Raw value: 0x%03x, voltage: %f V\n", result, result*conversion_factor);
+        sleep_ms(500);
     }
 }

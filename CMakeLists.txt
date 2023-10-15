@@ -17,7 +17,7 @@ add_executable(hello_serial
     )
 
 # pull in common dependencies
-target_link_libraries(hello_serial pico_stdlib)
+target_link_libraries(hello_serial pico_stdlib hardware_adc)
 
 # Enable USB output, disable UART output
 pico_enable_stdio_usb(hello_serial 1)
